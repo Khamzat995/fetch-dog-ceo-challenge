@@ -18,16 +18,37 @@ document.addEventListener('DOMContentLoaded', () => {
   const button = document.querySelector('button');
 
   // сразу загружаем изображения
-  fetchAndRenderImages();
+  fetchAndRenderImages = () => {
+    fetch(IMAGES_URL)
+    .then((res) => res.json())
+    .then((data) => {
+      for (let i = 0; i < data.message.length; i++) {
+        const img = document.createElement('img');
+        img.src = data.message[i];
+        imagesContainer.append(img);
+      }
+    })
+  };
+  fetchAndRenderImages()
+
 
   // загружаем список пород
-  fetchBreedsList();
+  fetchBreedsList = () => {
+    fetch(BREEDS_URL)
+    .then((res) => res.json())
+    .then((data) => {
+      for (let i = 0; i < data.message.length; i++) {
+        const li = document.createElement('li');
+        li.textContent = data.message[i];
+        breedsContainer.append(li)
+      }
+    })
+  };
 
+  fetchBreedsList()
   // еще раз загружаем изображения, если кликнули на кнопку обновления
   button.addEventListener('click', () => {
-    fetchAndRenderImages();
+    imagesContainer.textContent = '';
+    fetchAndRenderImages()
   });
-
-  // ТВОЙ КОД
-
 });
